@@ -1,0 +1,69 @@
+<!-- Este bloque es para la barra de navegación -->
+
+{% block barra %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+<nav class="navbar navbar-dark bg-dark" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="{% url 'home' %}">SHUESHIA</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            Menú
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'manga_list' %}">Mangas</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'anime_list' %}">Animes</a></li>
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'create_post' %}">Postear</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'edit_profile' %}">Editar Perfil</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'register' %}">Registrarse</a></li>
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+
+<!-- Bloque para desplegar la información del manga  -->
+
+{% block content %}
+<!-- Se muestra la información detallada de un manga -->
+<h1>{{ manga.name}}</h1>
+<small>Autor: {{ manga.mangaka}} </small><br/>
+<hr>
+<small>Género: {{manga.genre}}</small><br/>
+<hr>
+<small>Fecha de Publicación: {{manga.first_publication}}</small><br/>
+<hr>
+<small>Fecha de Cierre: {{manga.last_publication}}</small><br/>
+<hr>
+<small>Episodios: {{manga.chapters}}</small><br/>
+<hr>
+<small>Sinopsis: {{manga.synopsis}}</small><br/>
+<hr>
+
+<!-- Sección para hacer reviews del manga -->
+<h2>Reviews</h2>
+<a href="{% url 'add_review_manga' manga.pk %}">Añadir una Review</a>
+<br/>
+{% if not manga.mangarevs.all %}
+    Sin Reviews Aún... Añade uno :)
+{% else %}
+<br/>
+    {% for mangarev in manga.mangarevs.all %}
+        <strong> {{ mangarev.name}} - Fecha: {{ mangarev.date_added}}</strong>
+        <br/>
+        Review: {{ mangarev.body }}
+        <br/>
+    {% endfor %}
+{% endif %}
+
+
+{% endblock %}
