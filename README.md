@@ -1,8 +1,4 @@
 # Parcial1-BlogsShueshia
-
-# Estudiante
-Roberto Escarreola 4-809-1796
-
 #Comentarios
 Los usuarios pueden registrarse y logearse y del mismo modo hacer log out
 Solo los usuarios logueados pueden hacer algún blog, comentario, entre otros. 
